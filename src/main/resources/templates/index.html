@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+    <head>
+        <title>Main</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    </head>
+    <body>
+        <div>
+            <div sec:authorize="isAnonymous()">
+                <h3>Hello friend!</h3>
+                <h4><a href="/login">Login</a></h4>
+                <h4><a href="/registration">Register</a></h4>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                <h3>Hello <span sec:authentication="name"></span>!</h3>
+                <h4><a href="/cabinet">Cabinet</a></h4>
+                <h4 sec:authorize="hasRole('ADMIN')"><a href="/admin">All users</a></h4>
+                <h4><a href="/logout">Logout</a></h4>
+            </div>
+        </div>
+    </body>
+</html>

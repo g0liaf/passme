@@ -1,0 +1,8 @@
+.error {
+    color: red;
+}
+
+.nav {
+    position: fixed;
+    right: 1em;
+}
