@@ -29,4 +29,12 @@ public class Vault {
     public Long getId() {
         return id;
     }
+
+    public Set<Password> getPasswords() {
+        return passwords;
+    }
+
+    public void setPasswords(Set<Password> passwords) {
+        this.passwords = passwords;
+    }
 }
