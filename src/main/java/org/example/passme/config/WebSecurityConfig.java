@@ -17,10 +17,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final UserDetailsService userService;
+    private final PasswordEncoder encoder;
+
     @Autowired
-    private UserDetailsService userService;
-    @Autowired
-    private PasswordEncoder encoder;
+    WebSecurityConfig(UserDetailsService userService, PasswordEncoder encoder) {
+        this.userService = userService;
+        this.encoder = encoder;
+    }
 
     @Bean
     public AuthenticationProvider authProvider() {
@@ -35,9 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers(RegistrationController.REGISTRATION_MAPPING).not().fullyAuthenticated()
+                .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/cabinet").authenticated()
+                .antMatchers("/vault").authenticated()
                 //.anyRequest().authenticated()
                 .and()
                 .formLogin()

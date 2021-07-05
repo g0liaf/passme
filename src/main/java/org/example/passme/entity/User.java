@@ -12,17 +12,23 @@ import java.util.Set;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false)
     private Long id;
-    @Size(min = 5, message = "Не меньше 5 знаков")
-    private String username;
-    @Size(min = 8, message = "Не меньше 8 знаков")
-    private String password;
-    @Transient
-    private String passwordConfirm;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    @OneToOne()
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Vault vault;
+
+    @Size(min = 5)
+    private String username;
+
+    @Size(min = 8)
+    private String password;
+
+    @Transient
+    private String passwordConfirm;
 
     public User() {
     }

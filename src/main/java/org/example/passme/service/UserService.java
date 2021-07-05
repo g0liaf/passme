@@ -2,8 +2,9 @@ package org.example.passme.service;
 
 import org.example.passme.entity.Role;
 import org.example.passme.entity.User;
-import org.example.passme.repository.RoleRepository;
+import org.example.passme.entity.Vault;
 import org.example.passme.repository.UserRepository;
+import org.example.passme.repository.VaultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,22 +12,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
-    @PersistenceContext
-    private EntityManager em;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private VaultRepository vaultRepository;
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,8 +53,11 @@ public class UserService implements UserDetailsService {
         }
 
         user.setRoles(Collections.singleton(Role.User()));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        user.setPassword(encoder.encode(user.getPassword()));
+        var userRep = userRepository.save(user);
+        var vault = new Vault();
+        vault.setId(userRep.getId());
+        vaultRepository.save(vault);
         return true;
     }
 

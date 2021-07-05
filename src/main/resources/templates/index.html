@@ -15,7 +15,7 @@
             </div>
             <div sec:authorize="isAuthenticated()">
                 <h3>Hello <span sec:authentication="name"></span>!</h3>
-                <h4><a href="/vault">Cabinet</a></h4>
+                <h4><a href="/vault">Vault</a></h4>
                 <h4 sec:authorize="hasRole('ADMIN')"><a href="/admin">All users</a></h4>
                 <h4><a href="/logout">Logout</a></h4>
             </div>

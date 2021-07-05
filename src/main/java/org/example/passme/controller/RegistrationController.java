@@ -14,8 +14,6 @@ import javax.validation.Valid;
 
 @Controller
 public class RegistrationController {
-    public static final String REGISTRATION = "registration";
-    public static final String REGISTRATION_MAPPING = "/registration";
     private final UserService userService;
 
     @Autowired
@@ -23,27 +21,27 @@ public class RegistrationController {
         this.userService = userService;
     }
 
-    @GetMapping(REGISTRATION_MAPPING)
+    @GetMapping("/registration")
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
 
-        return REGISTRATION;
+        return "registration";
     }
 
-    @PostMapping(REGISTRATION_MAPPING)
+    @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return REGISTRATION;
+            return "registration";
         }
 
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())) {
             model.addAttribute("passwordError", "Пароли не совпадают");
-            return REGISTRATION;
+            return "registration";
         }
 
         if (!userService.saveUser(userForm)) {
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-            return REGISTRATION;
+            return "registration";
         }
 
         return "redirect:/login";

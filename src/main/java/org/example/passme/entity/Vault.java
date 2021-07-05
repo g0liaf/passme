@@ -1,17 +1,45 @@
 package org.example.passme.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-public class Vault {
+public class Vault implements Serializable {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Set<Login> getLogins() {
+        return logins;
+    }
+
+    public void setLogins(Set<Login> logins) {
+        this.logins = logins;
+    }
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
-    @OneToOne(mappedBy = "vault")
+
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    @OneToMany(mappedBy = "vault")
-    private Set<Password> passwords;
+
+    @OneToMany(mappedBy = "vault", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Login> logins;
+
+    public Vault() {
+    }
+
+    public Vault(User user) {
+        this.user = user;
+    }
 
     public User getUser() {
         return user;
@@ -21,20 +49,24 @@ public class Vault {
         this.user = user;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Set<Login> getPasswords() {
+        return logins;
     }
 
-    @Id
-    public Long getId() {
-        return id;
+    public void setPasswords(Set<Login> logins) {
+        this.logins = logins;
     }
 
-    public Set<Password> getPasswords() {
-        return passwords;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vault vault = (Vault) o;
+        return user.equals(vault.user);
     }
 
-    public void setPasswords(Set<Password> passwords) {
-        this.passwords = passwords;
+    @Override
+    public int hashCode() {
+        return Objects.hash(user);
     }
 }
