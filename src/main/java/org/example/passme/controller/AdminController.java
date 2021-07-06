@@ -21,24 +21,24 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping(ADMIN_MAPPING)
+    @GetMapping("/admin")
     public String userList(Model model) {
         model.addAttribute("allUsers", userService.allUsers());
-        return ADMIN;
+        return "admin";
     }
 
-    @PostMapping(ADMIN)
+    @PostMapping("/admin")
     public String deleteUser(@RequestParam(defaultValue = "") Long userId,
                              @RequestParam(defaultValue = "") String action) {
         if (action.equals("delete")) {
             userService.deleteUser(userId);
         }
-        return "redirect:" + ADMIN_MAPPING;
+        return "redirect:/admin";
     }
 
-    @GetMapping(ADMIN + "/{userId}")
+    @GetMapping("admin/{userId}")
     public String getUser(@PathVariable Long userId, Model model) {
         model.addAttribute("allUsers", userService.findUserById(userId));
-        return ADMIN;
+        return "admin";
     }
 }

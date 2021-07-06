@@ -3,13 +3,14 @@ package org.example.passme.entity;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
+@Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
     @NotNull
     private String name;

@@ -32,10 +32,8 @@ public class DataLoader implements ApplicationRunner {
         User admin = new User();
         admin.setUsername("admin");
         admin.setPassword(encoder.encode("qwer1234"));
+        admin.setVault(vaultRepository.save(new Vault()));
         admin.setRoles(Collections.singleton(Role.Admin()));
         userRepository.save(admin);
-        Vault vault = new Vault();
-        vault.setId(admin.getId());
-        vaultRepository.save(vault);
     }
 }

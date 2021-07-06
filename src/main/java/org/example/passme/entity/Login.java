@@ -16,9 +16,11 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Logins")
 public class Login implements Serializable {
     @Id
-    @Column(name = "vault_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     public Long getId() {
@@ -31,7 +33,6 @@ public class Login implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "vault_id", nullable = false)
-    @MapsId
     private Vault vault;
 
     @Column

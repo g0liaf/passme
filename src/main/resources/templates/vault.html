@@ -22,21 +22,22 @@
                 <th>Website</th>
                 <th>Username</th>
                 <th>Password</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td colspan="4">
-                    <!--<form action="#" th:action="@{/vault/login}" th:object="${loginForm}" method="post">
-                        <input type="text" th:field="*{name}">
-                        <input type="text" th:field="*{website}">
-                        <input type="text" th:field="*{username}">
-                        <input type="text" th:field="*{password}">
-                        <button type="submit">New Login</button>
-                    </form>-->
-                </td>
-            </tr>
-                <tr th:each="login : ${vault.getLogins()}">
+                <tr>
+                    <td colspan="4">
+                        <form th:action="@{/vault/{vaultId}/login(vaultId=${vault.getId()})}" th:object="${loginForm}" method="post">
+                            <label><input type="text" th:field="*{name}"></label>
+                            <label><input type="text" th:field="*{website}"></label>
+                            <label><input type="text" th:field="*{username}"></label>
+                            <label><input type="text" th:field="*{password}"></label>
+                            <button type="submit">New Login</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:each="login : ${logins}">
                     <td th:text="${login.name}"></td>
                     <td th:text="${login.website}"></td>
                     <td th:text="${login.username}"></td>

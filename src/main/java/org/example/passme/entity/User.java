@@ -9,16 +9,18 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true, nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne()
+    @JoinColumn(name = "vault_id", referencedColumnName = "id")
     private Vault vault;
 
     @Size(min = 5)

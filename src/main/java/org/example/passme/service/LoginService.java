@@ -25,8 +25,8 @@ public class LoginService {
         this.encryptor = encryptor;
     }
 
-    public void saveLogin(Login login) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+    public Login saveLogin(Login login) throws InvalidAlgorithmParameterException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
         login.setPassword(encryptor.encrypt(login.getPassword()));
-        loginRepository.save(login);
+        return loginRepository.save(login);
     }
 }
