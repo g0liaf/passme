@@ -37,7 +37,7 @@
                         </form>
                     </td>
                 </tr>
-                <tr th:each="login : ${logins}">
+                <tr th:each="login : ${vault.logins}">
                     <td th:text="${login.name}"></td>
                     <td th:text="${login.website}"></td>
                     <td th:text="${login.username}"></td>

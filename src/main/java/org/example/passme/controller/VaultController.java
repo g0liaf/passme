@@ -4,6 +4,7 @@ import org.example.passme.entity.Login;
 import org.example.passme.entity.User;
 import org.example.passme.repository.VaultRepository;
 import org.example.passme.service.LoginService;
+import org.example.passme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,8 @@ import javax.validation.Valid;
 @Controller
 public class VaultController {
     @Autowired
+    private UserService userService;
+    @Autowired
     private LoginService loginService;
     @Autowired
     private VaultRepository vaultRepository;
@@ -26,10 +29,9 @@ public class VaultController {
     @GetMapping("/vault")
     public String vault(Model model, Authentication authentication) {
         var user = (User) authentication.getPrincipal();
+        user = userService.findUserById(user.getId());
         var vault = user.getVault();
-        var logins = vault.getLogins();
         model.addAttribute("vault", vault);
-        model.addAttribute("logins", logins);
         model.addAttribute("loginForm", new Login());
         return "vault";
     }
@@ -42,10 +44,8 @@ public class VaultController {
         }
 
         var vault = vaultRepository.getById(vaultId);
-        //var vaultLogins = vault.getLogins();
-
+        loginForm.setVault(vault);
         try {
-            loginForm.setVault(vault);
             loginService.saveLogin(loginForm);
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());

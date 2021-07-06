@@ -1,6 +1,8 @@
 package org.example.passme.controller;
 
 import org.example.passme.entity.User;
+import org.example.passme.entity.Vault;
+import org.example.passme.repository.VaultRepository;
 import org.example.passme.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,12 @@ import javax.validation.Valid;
 @Controller
 public class RegistrationController {
     private final UserService userService;
+    private final VaultRepository vaultRepository;
 
     @Autowired
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, VaultRepository vaultRepository) {
         this.userService = userService;
+        this.vaultRepository = vaultRepository;
     }
 
     @GetMapping("/registration")
@@ -39,6 +43,7 @@ public class RegistrationController {
             return "registration";
         }
 
+        userForm.setVault(vaultRepository.save(new Vault()));
         if (!userService.saveUser(userForm)) {
             model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
             return "registration";
